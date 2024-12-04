@@ -24,10 +24,33 @@ public class Day1 {
         } catch (IOException e) {
             System.err.println("Fehler beim Lesen der Datei: " + e.getMessage());
         }
+
+        System.out.println(simScore(leftList, rightList));
         leftList.sort(Integer::compare);
         rightList.sort(Integer::compare);
         System.out.println(diffList(leftList, rightList));
 
+    }
+
+    public static int countNum(ArrayList<Integer> list, int num) {
+
+        int count = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == num) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public static int simScore(ArrayList<Integer> left, ArrayList<Integer> right) {
+        int score = 0;
+        for (int i = 0; i < left.size(); i++) {
+            score += left.get(i) * countNum(right, left.get(i));
+        }
+
+        return score;
     }
 
     public static int diffList(ArrayList<Integer> left, ArrayList<Integer> right) {
