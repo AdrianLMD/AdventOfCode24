@@ -10,17 +10,23 @@ public class Day2 {
 
         String filePath = "./inputs/Day2Table.txt";
         int safeCounter = 0;
+        int safeWithDampenerCounter = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (isSafe(arr2List(splitString(line)))) {
+                ArrayList<Integer> report = arr2List(splitString(line));
+
+                if (isSafe(report)) {
                     safeCounter++;
+                }else if(isSafeWithDampener(report)){
+                    safeWithDampenerCounter++;
                 }
             }
         } catch (IOException e) {
             System.err.println("Fehler beim Lesen der Datei: " + e.getMessage());
         }
-        System.out.println(safeCounter);
+        System.out.println("Always safe: " + safeCounter);
+        System.out.println("Safe with Dampener: " + (safeCounter + safeWithDampenerCounter));
     }
 
     public static Boolean decrease(ArrayList<Integer> line) {
@@ -64,6 +70,17 @@ public class Day2 {
         } else {
             return false;
         }
+    }
+
+    public static Boolean isSafeWithDampener(ArrayList<Integer> report){
+        for(int i = 0; i < report.size(); i++){
+            ArrayList<Integer> reportCopy = new ArrayList<>(report);
+            reportCopy.remove(i);
+            if (isSafe(reportCopy)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static String[] splitString(String line) {
