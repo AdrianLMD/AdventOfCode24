@@ -7,12 +7,12 @@ import java.util.ArrayList;
 
 public class Day1 {
 
-    public static ArrayList<String> leftList = new ArrayList<String>();
-    public static ArrayList<String> rightList = new ArrayList<String>();
+    public static ArrayList<Integer> leftList = new ArrayList<Integer>();
+    public static ArrayList<Integer> rightList = new ArrayList<Integer>();
 
     public static void main(String[] args) {
 
-        String filePath = "Day1Table.txt";
+        String filePath = "Day1/Day1Table.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -20,69 +20,35 @@ public class Day1 {
             while ((line = reader.readLine()) != null) {
                 manageLists(line);
             }
-            if (rightList.size() > 0) {
-                System.out.println(rightList.get(rightList.size() - 1));
-                // System.out.println(sortList(rightList));
-            }
 
         } catch (IOException e) {
             System.err.println("Fehler beim Lesen der Datei: " + e.getMessage());
         }
-
-        System.out.println(diff(sortList(leftList), sortList(rightList)));
-        System.out.println(Integer.valueOf("41255"));
+        leftList.sort(Integer::compare);
+        rightList.sort(Integer::compare);
+        System.out.println(diffList(leftList, rightList));
 
     }
 
-    public static int diff(int[] left, int[] right) {
-        int difference = 0;
-        for (int i = 0; i < left.length; i++) {
-            if (left[i] > right[i]) {
-                difference += left[i] - right[i];
-            } else {
-                difference += right[i] - left[i];
-            }
-        }
+    public static int diffList(ArrayList<Integer> left, ArrayList<Integer> right) {
 
+        int difference = 0;
+        for (int i = 0; i < left.size(); i++) {
+            difference += Math.abs(left.get(i) - right.get(i));
+        }
         return difference;
     }
 
-    public static int[] sortList(ArrayList<String> list) {
-        int[] sortedList = new int[list.size()];
-        for (int j = 0; j < list.size(); j++) {
-            for (int i = 0; i < list.size() - 1; i++) {
-                if (Integer.valueOf(list.get(i)) > Integer.valueOf(list.get(i + 1))) {
-                    sortedList[i] = Integer.valueOf(list.get(i));
-                } else {
-                    sortedList[i] = Integer.valueOf(list.get(i + 1));
-                }
-            }
-        }
-
-        return sortedList;
-
-    }
-
     public static void manageLists(String line) {
-        // System.out.println("test before if");
         for (int i = 0; i < line.length(); i++) {
-            // System.out.println(line.substring(i, i));
+            // if # gets detected, splits String and puts int value in ArrayList
             if (line.substring(i, i + 1).equals("#")) {
-                appendLeft(line.substring(0, i));
-                // System.out.println("test");
-                appendRight(line.substring(i + 1, line.length()));
+                leftList.add(Integer.valueOf(line.substring(0, i)));
+                rightList.add(Integer.valueOf(line.substring(i + 1, line.length())));
                 break;
             }
 
         }
-    }
-
-    public static void appendLeft(String element) {
-        leftList.add(element);
-    }
-
-    public static void appendRight(String element) {
-        rightList.add(element);
     }
 
 }
