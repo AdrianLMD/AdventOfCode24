@@ -6,41 +6,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Day1 {
-
     public static ArrayList<Integer> leftList = new ArrayList<Integer>();
     public static ArrayList<Integer> rightList = new ArrayList<Integer>();
-
     public static void main(String[] args) {
-
-        String filePath = "Day1/Day1Table.txt";
-
+        String filePath = "./inputs/Day1Table.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-
             while ((line = reader.readLine()) != null) {
                 manageLists(line);
             }
-
         } catch (IOException e) {
             System.err.println("Fehler beim Lesen der Datei: " + e.getMessage());
         }
-
         System.out.println(simScore(leftList, rightList));
         leftList.sort(Integer::compare);
         rightList.sort(Integer::compare);
         System.out.println(diffList(leftList, rightList));
-
     }
 
     public static int countNum(ArrayList<Integer> list, int num) {
-
         int count = 0;
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i) == num) {
                 count++;
             }
         }
-
         return count;
     }
 
@@ -49,12 +39,10 @@ public class Day1 {
         for (int i = 0; i < left.size(); i++) {
             score += left.get(i) * countNum(right, left.get(i));
         }
-
         return score;
     }
 
     public static int diffList(ArrayList<Integer> left, ArrayList<Integer> right) {
-
         int difference = 0;
         for (int i = 0; i < left.size(); i++) {
             difference += Math.abs(left.get(i) - right.get(i));
@@ -70,8 +58,6 @@ public class Day1 {
                 rightList.add(Integer.valueOf(line.substring(i + 1, line.length())));
                 break;
             }
-
         }
     }
-
 }
