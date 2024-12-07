@@ -15,10 +15,12 @@ public class Day4 {
         // System.out.println(checkVertically(xmasArray));
         // System.out.println(checkDiagonally(xmasArray));
         System.out.println(checkHorizontally(xmasArray) + checkVertically(xmasArray) + checkDiagonally(xmasArray));
+        System.out.println(checkXes(xmasArray));
     }
 
     public static String[] createArray() {
         String filePath = "./inputs/Day4Table.txt";
+        //String filePath = "./inputs/Day4TableTest.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             int counter = 0;
@@ -30,6 +32,52 @@ public class Day4 {
             System.err.println("Fehler beim Lesen der Datei: " + e.getMessage());
         }
         return xmasArray;
+    }
+
+    public static int checkXes(String[] xmasArray){
+        int counter = 0;
+
+        for(int i = 1; i < xmasArray.length - 1; i++){
+            for(int j = 1; j < xmasArray[i].length() -1; j++){
+                if(xmasArray[i].charAt(j) == 'A'){
+                    /*
+                     * M S
+                     *  A
+                     * M S
+                     */
+                    if(xmasArray[i-1].charAt(j-1) == 'M' && xmasArray[i+1].charAt(j+1) == 'S' && xmasArray[i + 1].charAt(j-1) == 'M' && xmasArray[i-1].charAt(j+1)== 'S'){
+                        counter++;
+                    }
+                    /*
+                     * M M
+                     *  A
+                     * S S
+                     */
+                    if(xmasArray[i-1].charAt(j-1) == 'M' && xmasArray[i+1].charAt(j+1) == 'S' && xmasArray[i + 1].charAt(j-1) == 'S' && xmasArray[i-1].charAt(j+1)== 'M'){
+                        counter++;
+                    }
+                    /*
+                     * S M
+                     *  A
+                     * S M
+                     */
+                    if(xmasArray[i-1].charAt(j-1) == 'S' && xmasArray[i+1].charAt(j+1) == 'M' && xmasArray[i + 1].charAt(j-1) == 'S' && xmasArray[i-1].charAt(j+1)== 'M'){
+                        counter++;
+                    }
+                    /*
+                     * S S
+                     *  A
+                     * M M
+                     */
+                    if(xmasArray[i-1].charAt(j-1) == 'S' && xmasArray[i+1].charAt(j+1) == 'M' && xmasArray[i + 1].charAt(j-1) == 'M' && xmasArray[i-1].charAt(j+1)== 'S'){
+                        counter++;
+                    }
+                   
+                }
+            }
+        }
+
+        return counter;
     }
 
     public static int checkHorizontally(String[] xmasArray) {
