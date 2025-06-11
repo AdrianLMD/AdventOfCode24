@@ -16,6 +16,8 @@ fn day_1_run() -> String{
 }
 
 fn day_2_run() -> String {
-    let result_day_2: i32 = day_2::day_2_controller("../inputs/Day2Table.txt");
-    format!("Day2 Part 1: {}", result_day_2)
+    let result_day_2: (i32, i32) = day_2::day_2_controller("../inputs/Day2Table.txt");
+    format!("Day2 Part 1: {} \nDay2 Part2: {}"
+    ,result_day_2.0
+    ,result_day_2.1)
 }
