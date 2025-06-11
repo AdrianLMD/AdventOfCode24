@@ -20,21 +20,28 @@ fn parse_file(path: &str) -> io::Result<(Vec<i32>, Vec<i32>)> {
 
     left_vec.sort();
     right_vec.sort();
-
+    println!("test");
     Ok((left_vec, right_vec))
 }
 
-pub fn distance(path: &str) -> i32 {
+pub fn day_1_controller(path: &str) -> (i32, i32){
     let (left_vec, right_vec) = match parse_file(path) {
         Ok((l, r)) => (l, r),
         Err(e) => {
             eprintln!("Error parsing: {}", e);
-
-            return 0;
+            return (-1, -1)
         }
     };
+    let output_1 = distance(&left_vec, &right_vec);
+    let output_2 = similarity(&left_vec, &right_vec);
+    (output_1, output_2)
+}
+
+pub fn distance(left_vec: &Vec<i32>, right_vec: &Vec<i32>) -> i32 {
+    
 
     let mut total_distance = 0;
+
     if left_vec.len() == right_vec.len() {
         for i in 0..left_vec.len() {
             total_distance += (left_vec[i]-right_vec[i]).abs()
@@ -43,4 +50,22 @@ pub fn distance(path: &str) -> i32 {
         total_distance = 404;
     }
     total_distance
+}
+
+pub fn similarity(left_vec: &Vec<i32>, right_vec: &Vec<i32>) -> i32 {
+
+    let mut count: i32 = 0;
+    let mut sim_score: i32 = 0;
+
+    for i in 0..left_vec.len() {
+        for j in 0..right_vec.len() {
+            if left_vec[i] == right_vec[j] {
+                count += 1;
+            }
+        }
+        sim_score += left_vec[i] * count;
+        count = 0;
+    }
+    sim_score
+
 }
