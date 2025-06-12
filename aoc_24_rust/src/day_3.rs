@@ -12,20 +12,33 @@ fn parse_file(path: &str) -> std::io::Result<String>{
     Ok(line)
 }
 
-pub fn day_3_controller(path: &str) -> i32{
+pub fn day_3_controller(path: &str) -> (i32, i32) {
     let line:String = parse_file(path).expect("error parsing file");
     logic(&line)
 }
 
-fn logic(line: &str) -> i32{
+fn logic(line: &str) -> (i32, i32){
 
     let mut sum: i32 = 0;
-    let re = Regex::new(r"mul\((\d+),(\d+)\)").unwrap();
+    let mut sum_total = 0;
+    let mut active:bool = true;
+    let re = Regex::new(r"don't\(\)|do\(\)|mul\((\d+),(\d+)\)").unwrap();
     for caps in re.captures_iter(line) {
-        let x: i32 = caps[1].parse().unwrap();
-        let y: i32 = caps[2].parse().unwrap();
-        
-        sum += x*y;
+        if&caps[0] == "don't()" {
+            active = false;
+        } else if &caps[0] == "do()" {
+            active = true;
+        } else if caps.get(1).is_some() && caps.get(2).is_some() {
+            if active {
+                let x: i32 = caps[1].parse().unwrap();
+                let y: i32 = caps[2].parse().unwrap();
+                sum+= x*y;
+            } else {
+                let x: i32 = caps[1].parse().unwrap();
+                let y: i32 = caps[2].parse().unwrap();
+                sum_total += x*y;
+            }
+        }
     }
-    sum
+    (sum_total, sum)
 }
